@@ -9,7 +9,7 @@ import (
 
 const (
 	rotationPerSpeed = math.Pi //每秒旋转的角度
-	maxAcceleration  = 6.0     //最大加速度
+	maxAcceleration  = 8.0     //最大加速度
 )
 
 var curAcceleration float64 //当前加速度
