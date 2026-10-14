@@ -28,6 +28,8 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func main() {
 	var g = &Game{}
 	g.player = NewPlayer(g)
+	ebiten.SetWindowTitle("Go Asterolds")
+	ebiten.SetWindowSize(screenWidth, screenHeight)
 	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
 	}

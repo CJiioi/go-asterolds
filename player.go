@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	rotationPerSpeed = math.Pi //每秒旋转的角度
-	maxAcceleration  = 8.0     //最大加速度
+	rotationPerSpeed          = math.Pi   //每秒旋转的角度
+	maxAcceleration           = 8.0       //最大加速度
+	screenWidth, screenHeight = 1280, 720 //16:9
 )
 
 var curAcceleration float64 //当前加速度
@@ -28,7 +29,13 @@ func NewPlayer(g *Game) *Player {
 
 	p.sprite = assets.PlayerSprite
 	p.game = g
-
+	//玩家居中屏幕
+	bounds := p.sprite.Bounds()
+	halfW, halfH := float64(bounds.Dx()/2), float64(bounds.Dy()/2)
+	p.position = Vector{
+		X: screenWidth/2 - halfW, //-halfW 可以让图片中心居中
+		Y: screenHeight/2 - halfH,
+	}
 	return p
 }
 
@@ -64,6 +71,7 @@ func (p *Player) accelerate() {
 	//如果按下了上键 则加速
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
 		//逐步加速 | 限制边界
+		p.keepScreen()
 		if curAcceleration < maxAcceleration {
 			curAcceleration = p.playerVelocity + 4
 		}
@@ -79,5 +87,20 @@ func (p *Player) accelerate() {
 		//更新位置
 		p.position.X += dx
 		p.position.Y += dy
+	}
+}
+
+//角色保持在窗口内
+func (p *Player) keepScreen() {
+	//如果角色超出边界，则把角色放置到该边界对面出现
+	if p.position.X >= screenWidth {
+		p.position.X = 0
+	} else if p.position.X <= 0 {
+		p.position.X = screenWidth
+	}
+	if p.position.Y >= screenHeight {
+		p.position.Y = 0
+	} else if p.position.Y <= 0 {
+		p.position.Y = screenHeight
 	}
 }
