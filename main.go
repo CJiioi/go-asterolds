@@ -1,36 +1,16 @@
 package main
 
 import (
+	"go-asterrolds/goasteroids"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-type Game struct {
-	player *Player
-}
-
-func (g *Game) Update() error {
-	g.player.Update()
-	return nil
-}
-
-//渲染绘制
-func (g *Game) Draw(screen *ebiten.Image) {
-	g.player.Draw(screen)
-}
-
-//分辨率
-func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return outsideWidth, outsideHeight
-}
-
 func main() {
-	var g = &Game{}
-	g.player = NewPlayer(g)
-	ebiten.SetWindowTitle("Go Asterolds")
-	ebiten.SetWindowSize(screenWidth, screenHeight)
-	if err := ebiten.RunGame(g); err != nil {
+	ebiten.SetWindowTitle("Go Asteroids")
+	ebiten.SetWindowSize(goasteroids.ScreenWidth, goasteroids.ScreenHeight)
+	if err := ebiten.RunGame(&goasteroids.Game{}); err != nil {
 		log.Fatal(err)
 	}
 }

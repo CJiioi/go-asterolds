@@ -1,4 +1,4 @@
-package main
+package goasteroids
 
 import (
 	"go-asterrolds/assets"
@@ -10,13 +10,13 @@ import (
 const (
 	rotationPerSpeed          = math.Pi   //每秒旋转的角度
 	maxAcceleration           = 8.0       //最大加速度
-	screenWidth, screenHeight = 1280, 720 //16:9
+	ScreenWidth, ScreenHeight = 1280, 720 //16:9
 )
 
 var curAcceleration float64 //当前加速度
 
 type Player struct {
-	game           *Game
+	game           *GameScene
 	sprite         *ebiten.Image
 	rotation       float64
 	position       Vector  //位置
@@ -24,7 +24,7 @@ type Player struct {
 
 }
 
-func NewPlayer(g *Game) *Player {
+func NewPlayer(g *GameScene) *Player {
 	var p = &Player{}
 
 	p.sprite = assets.PlayerSprite
@@ -33,8 +33,8 @@ func NewPlayer(g *Game) *Player {
 	bounds := p.sprite.Bounds()
 	halfW, halfH := float64(bounds.Dx()/2), float64(bounds.Dy()/2)
 	p.position = Vector{
-		X: screenWidth/2 - halfW, //-halfW 可以让图片中心居中
-		Y: screenHeight/2 - halfH,
+		X: ScreenWidth/2 - halfW, //-halfW 可以让图片中心居中
+		Y: ScreenHeight/2 - halfH,
 	}
 	return p
 }
@@ -66,7 +66,7 @@ func (p *Player) Update() {
 	p.accelerate()
 }
 
-//角色加速
+// 角色加速
 func (p *Player) accelerate() {
 	//如果按下了上键 则加速
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
@@ -90,17 +90,17 @@ func (p *Player) accelerate() {
 	}
 }
 
-//角色保持在窗口内
+// 角色保持在窗口内
 func (p *Player) keepScreen() {
 	//如果角色超出边界，则把角色放置到该边界对面出现
-	if p.position.X >= screenWidth {
+	if p.position.X >= ScreenWidth {
 		p.position.X = 0
 	} else if p.position.X <= 0 {
-		p.position.X = screenWidth
+		p.position.X = ScreenWidth
 	}
-	if p.position.Y >= screenHeight {
+	if p.position.Y >= ScreenHeight {
 		p.position.Y = 0
 	} else if p.position.Y <= 0 {
-		p.position.Y = screenHeight
+		p.position.Y = ScreenHeight
 	}
 }
